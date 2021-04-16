@@ -13,7 +13,7 @@ class DestinationSerializer(serializers.ModelSerializer):
     # def update(self, instance, validated_data):
     #     instance.name = validated_data.get('name', instance.name)
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
