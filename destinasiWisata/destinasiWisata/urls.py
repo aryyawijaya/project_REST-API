@@ -32,5 +32,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/', include(router.urls)),
     # path('api/user/', include(user.urls)),
-    path('api/', include('destinasiWisataYogyakarta.urls')),
+    path('api/v1/', include('destinasiWisataYogyakarta.urls')),
 ]

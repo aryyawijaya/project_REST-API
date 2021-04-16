@@ -8,9 +8,11 @@ from destinasiWisataYogyakarta.serializers import DestinationSerializer, UserSer
 # from rest_framework import viewsets, mixins, generics
 from rest_framework.response import Response
 # from django.shortcuts import get_object_or_404
-# from rest_framework.views import APIView
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework import generics
+from django.http import Http404
 
 # Create your views here.
 
@@ -18,67 +20,82 @@ from rest_framework import status
 #     queryset = Destination.objects.all()
 #     serializer_class = DestinationSerializer
 
-# @api_view(['GET', ])
-@api_view(['GET', 'POST',])
-def destination_list(request):
-    if request.method == 'GET':
-        destination = Destination.objects.all()
-        serializer = DestinationSerializer(destination, many=True)
-        return Response(serializer.data)
+class DestinationList(generics.ListCreateAPIView):
+    queryset = Destination.objects.all()
+    serializer_class = DestinationSerializer
 
-    elif request.method == 'POST':
-        serializer = DestinationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['GET', 'POST',])
+# def destination_list(request):
+#     if request.method == 'GET':
+#         destination = Destination.objects.all()
+#         serializer = DestinationSerializer(destination, many=True)
+#         return Response(serializer.data)
 
-@api_view(['GET', 'PUT', 'DELETE',])
-def destination_detail(request, pk):
-    try:
-        destination = Destination.objects.get(pk=pk)
-    except Destination.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+#     elif request.method == 'POST':
+#         serializer = DestinationSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    if request.method == 'GET':
-        serializer = DestinationSerializer(destination)
-        return Response(serializer.data)
+class DestinationDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Destination.objects.all()
+    serializer_class = DestinationSerializer
+
+# @api_view(['GET', 'PUT', 'DELETE',])
+# def destination_detail(request, pk):
+#     try:
+#         destination = Destination.objects.get(pk=pk)
+#     except Destination.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     if request.method == 'GET':
+#         serializer = DestinationSerializer(destination)
+#         return Response(serializer.data)
     
-    elif request.method == 'PUT':
-        serializer = DestinationSerializer(destination, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'PUT':
+#         serializer = DestinationSerializer(destination, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    elif request.method == 'DELETE':
-        destination.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     elif request.method == 'DELETE':
+#         destination.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['GET', 'POST',])
-def user_list(request):
-    if request.method == 'GET':
-        user = User.objects.all()
-        serializer = UserSerializer(user, many=True)
-        return Response(serializer.data)
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    elif request.method == 'POST':
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['GET', 'POST',])
+# def user_list(request):
+#     if request.method == 'GET':
+#         user = User.objects.all()
+#         serializer = UserSerializer(user, many=True)
+#         return Response(serializer.data)
 
-@api_view(['GET',])
-def user_detail(request, pk):
-    try:
-        user = User.objects.get(pk=pk)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+#     elif request.method == 'POST':
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+# @api_view(['GET',])
+# def user_detail(request, pk):
+#     try:
+#         user = User.objects.get(pk=pk)
+#     except User.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    if request.method == 'GET':
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+#     if request.method == 'GET':
+#         serializer = UserSerializer(user)
+#         return Response(serializer.data)
 
 # class UserViewSet(viewsets.ReadOnlyModelViewSet):
 #     queryset = User.objects.all()

@@ -2,8 +2,8 @@ from django.urls import path
 from destinasiWisataYogyakarta.views import *
 
 urlpatterns = [
-    path('destination/', destination_list),
-    path('destination/<int:pk>/', destination_detail),
-    path('user/', user_list),
-    path('user/<int:pk>/', user_detail),
+    path('destination/', DestinationList.as_view()),
+    path('destination/<int:pk>/', DestinationDetail.as_view()),
+    path('user/', UserList.as_view()),
+    path('user/<int:pk>/', UserDetail.as_view()),
 ]
