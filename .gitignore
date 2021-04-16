@@ -162,3 +162,5 @@ Thumbs.db
 *.box
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vagrant
+
+setup.txt

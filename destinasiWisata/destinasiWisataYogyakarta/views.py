@@ -3,25 +3,72 @@ from django.shortcuts import render
 # from django.views.decorators.csrf import csrf_exempt
 # from rest_framework.parsers import JSONParser
 from destinasiWisataYogyakarta.models import Destination
-from destinasiWisataYogyakarta.serializers import DestinationSerializer, UserSerializer
 from django.contrib.auth.models import User
-from rest_framework import viewsets, mixins, generics
+from destinasiWisataYogyakarta.serializers import DestinationSerializer, UserSerializer
+# from rest_framework import viewsets, mixins, generics
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
+# from django.shortcuts import get_object_or_404
+# from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 # Create your views here.
 
+# class DestinationViewSet(viewsets.ModelViewSet):
+#     queryset = Destination.objects.all()
+#     serializer_class = DestinationSerializer
 
-class DestinationViewSet(viewsets.ModelViewSet):
-    queryset = Destination.objects.all()
-    serializer_class = DestinationSerializer
+# @api_view(['GET', ])
+@api_view(['GET', 'POST',])
+def destination_list(request):
+    if request.method == 'GET':
+        destination = Destination.objects.all()
+        serializer = DestinationSerializer(destination, many=True)
+        return Response(serializer.data)
 
-# @api_view(['GET', 'POST'])
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    elif request.method == 'POST':
+        serializer = DestinationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE',])
+def destination_detail(request, pk):
+    try:
+        destination = Destination.objects.get(pk=pk)
+    except Destination.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = DestinationSerializer(destination)
+        return Response(serializer.data)
+    
+    elif request.method == 'PUT':
+        serializer = DestinationSerializer(destination, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        destination.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+# class UserViewSet(viewsets.ReadOnlyModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+# @api_view(['GET', ])
+# def UserViewSet(request, slug):
+#     try:
+#         user = User.objects.get(slug=slug)
+#     except User.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     if request.method == 'GET':
+#         serializer = UserSerializer(user)
+#         return Response(serializer.data)
 
     # def get(self, request):
     #     if request.method == 'GET':
