@@ -1,5 +1,8 @@
 # Aryya Bagus Padmanawijaya
 
+## Documentation
+- [documentation](https://documenter.getpostman.com/view/15365188/TzJsexte)
+
 ## Tech Stack
 1. Django
 2. Django Rest Framework
@@ -10,6 +13,3 @@
 
 ## Contributors
 1. [Aryya Bagus P](https://github.com/aryyawijaya)
-
-## Documentation
-- [documentation](https://documenter.getpostman.com/view/15365188/TzJsexte)
