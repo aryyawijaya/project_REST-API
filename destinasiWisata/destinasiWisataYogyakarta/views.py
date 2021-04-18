@@ -20,6 +20,7 @@ from rest_framework import generics
 #     queryset = Destination.objects.all()
 #     serializer_class = DestinationSerializer
 
+# GET, POST
 class DestinationList(generics.ListCreateAPIView):
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
@@ -38,6 +39,7 @@ class DestinationList(generics.ListCreateAPIView):
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# GET, PUT, PATCH, DELETE (single model instance)
 class DestinationDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
