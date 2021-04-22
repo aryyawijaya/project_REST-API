@@ -1,22 +1,18 @@
 from django.shortcuts import render
 from accounts.serializers import *
 from django.contrib.auth.models import User
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from knox.models import AuthToken
 from rest_framework.response import Response
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from knox.views import LoginView
-
-# from rest_framework.authtoken.views import ObtainAuthToken
-# from rest_framework.authtoken.models import Token
-# from rest_framework.response import Response
-
-# Create your views here.
+from knox.views import LoginView, LogoutView
+from rest_framework.views import APIView
+from django.http import Http404
 
 # POST register/
 class RegisterAPI(generics.GenericAPIView):
-    serializer_class = RegisterSerializer    
+    serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -24,6 +20,8 @@ class RegisterAPI(generics.GenericAPIView):
         user = serializer.save()
         return Response(
             {
+                'status': status.HTTP_201_CREATED,
+                'message': 'success create new user',
                 'user': UserSerializer(user, context=self.get_serializer_context()).data,
                 'token': AuthToken.objects.create(user)[1]
             }
@@ -40,14 +38,52 @@ class LoginAPI(LoginView):
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
 
-# GET user/
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class LogoutAPI(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-# GET user/id/
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    def post(self, request, format=None):
+        logout(request)
+        request._auth.delete() # delete token
+        return Response(
+            {
+                'status': status.HTTP_200_OK,
+                'message': 'success logged out'
+            }
+        )
+
+# GET user/
+class UserList(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = User.objects.all()
+        serializer = UserSerializer(user, many=True)
+        return Response(
+            {
+                'status': status.HTTP_200_OK,
+                'message': 'success get users',
+                'data': serializer.data
+            }
+        )
+
+# GET user/id/
+class UserDetail(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+
+    # GET
+    def get(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = UserSerializer(user)
+        return Response(
+            {
+                'status': status.HTTP_200_OK,
+                'message': 'success get user',
+                'data': serializer.data
+            }
+        )

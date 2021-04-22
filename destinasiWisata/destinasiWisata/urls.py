@@ -15,23 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# from destinasiWisataYogyakarta.views import *
-# from rest_framework import routers
-# from destinasiWisataYogyakarta import api
-
-# router = routers.DefaultRouter()
-# router.register('destination', DestinationViewSet)
-# router.register('user', UserViewSet)
-
-# user = routers.DefaultRouter()
-# user.register('signup', )
-# user.register('signin', )
-# user.register('logout', )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/v1/', include(router.urls)),
-    # path('api/user/', include(user.urls)),
     path('api/v1/', include('destinasiWisataYogyakarta.urls')),
     path('api/v1/', include('accounts.urls')),
 ]
