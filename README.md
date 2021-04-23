@@ -1,7 +1,7 @@
 # Aryya Bagus Padmanawijaya
 
-## Documentation
-- [documentation](https://documenter.getpostman.com/view/15365188/TzJsexte)
+## Screenshot
+![](./ss.png)
 
 ## Tech Stack
 1. Django
@@ -13,3 +13,6 @@
 
 ## Contributors
 1. [Aryya Bagus P](https://github.com/aryyawijaya)
+
+## REST API Documentation
+- [documentation](https://documenter.getpostman.com/view/15365188/TzJsexte)
