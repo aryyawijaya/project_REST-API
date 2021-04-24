@@ -4,9 +4,10 @@
 ![](./ss.png)
 
 ## Tech Stack
-1. Django
-2. Django Rest Framework
-3. MySQL
+1. Python
+2. Django
+3. Django Rest Framework
+4. MySQL
 
 ## Repository
 1. [here](https://github.com/aryyawijaya/restAPI_project)
